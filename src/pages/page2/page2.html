@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Lista de Tarefas</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+      <ion-icon [name]="item.icon" item-left></ion-icon>
+      <div class="item-note" item-right>
+        {{item.nome}} =>
+        {{item.tempoString}} 
+      </div>
+      <button ng-show="item.play==false" ion-button clear item-right (click)="play($event, item)" >Começar</button>
+      <button ng-show="item.play==true" ion-button clear item-right (click)="stop($event, item)" >Parar</button>
+      <button ion-button clear item-right (click)="deletar($event, item)" >Deletar</button>
+    </button>
+  </ion-list>
+  <div *ngIf="selectedItem" padding>
+    Voce veio de <b>{{selectedItem.nome}}</b>
+  </div>
+</ion-content>

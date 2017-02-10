@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Cadastrar Tarefa</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-input placeholder="Nome" type="text" [(ngModel)]="txtTarefa"></ion-input>
+  </ion-item>
+  <button ion-button ion-button block (click)="salvar()">Salvar</button>
+</ion-content>
+  
