@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { SQLite } from 'ionic-native';
 
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-page2',
@@ -27,7 +27,7 @@ export class Page2 {
             nome: data.rows.item(i).nome,
             tempo: data.rows.item(i).tempo,
             tempoString: this.formataTempo(data.rows.item(i).tempo),
-            icon: 'paper-plane',
+            icon: 'clipboard',
             play: false
           });
         }
@@ -37,7 +37,7 @@ export class Page2 {
     });
   }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public alertCtrl: AlertController) {
     // If we navigated to this page, we will have an item available as a nav param
     this.database = new SQLite();
     this.database.openDatabase({name: "tasktime.db", location: "default"}).then(() => {
@@ -99,9 +99,7 @@ export class Page2 {
 
   play(event, item) {
     item.play = true;
-    //this.navCtrl.push(Page2, {
-      //item: item
-   // });
+    console.log(this.items);
   }
 
   stop(event, item) {
@@ -124,5 +122,30 @@ export class Page2 {
         this.items.splice(i, 1);
       }
     }
+  }
+
+  
+  deletarDialog(event, item) {
+    let confirm = this.alertCtrl.create({
+      title: 'Aviso',
+      message: 'Tem certeza que quer deletar essa tarefa?',
+      buttons: [
+        {
+          text: 'Sim',
+          icon: 'checkmark',
+          handler: () => {
+            this.deletar(event, item);
+          }
+        },
+        {
+          text: 'Não',
+          icon: 'close',
+          handler: () => {
+            console.log('Agree clicked');
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }

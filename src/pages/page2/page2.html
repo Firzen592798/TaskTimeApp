@@ -12,12 +12,12 @@
     <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
       <ion-icon [name]="item.icon" item-left></ion-icon>
       <div class="item-note" item-right>
-        {{item.nome}} =>
+        {{item.nome}} 
         {{item.tempoString}} 
       </div>
-      <button ng-show="item.play==false" ion-button clear item-right (click)="play($event, item)" >Começar</button>
-      <button ng-show="item.play==true" ion-button clear item-right (click)="stop($event, item)" >Parar</button>
-      <button ion-button clear item-right (click)="deletar($event, item)" >Deletar</button>
+      <button ion-button icon-only *ngIf="item.play;" clear item-right (click)="stop($event, item)" ><ion-icon name="pause"></ion-icon></button>
+
+      <button ion-button icon-only *ngIf="!item.play;" clear item-right (click)="play($event, item)" ><ion-icon name="play"></ion-icon></button>            <button ion-button icon-only clear item-right (click)="deletarDialog($event, item)" ><ion-icon name="trash"></ion-icon></button>
     </button>
   </ion-list>
   <div *ngIf="selectedItem" padding>
