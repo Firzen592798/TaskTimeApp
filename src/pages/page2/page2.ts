@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { SQLite } from 'ionic-native';
+import { SQLite, BackgroundMode } from 'ionic-native';
 
 import { NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 
@@ -39,6 +39,7 @@ export class Page2 {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public alertCtrl: AlertController) {
     // If we navigated to this page, we will have an item available as a nav param
+    BackgroundMode.enable();
     this.database = new SQLite();
     this.database.openDatabase({name: "tasktime.db", location: "default"}).then(() => {
     this.items = [];
@@ -62,7 +63,7 @@ export class Page2 {
   }
 
   timer(items: any){
-    console.log("Dentro timer "+items);
+    console.log("Modo Background:"+BackgroundMode.isActive());
     for(var i = 0; i < items.length; i++){
       if(items[i].play){
         items[i].tempo += 1;
