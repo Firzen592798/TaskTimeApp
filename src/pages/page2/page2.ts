@@ -13,7 +13,7 @@ export class Page2 {
   database: SQLite;
   selectedItem: any;
   icons: string[];
-  items: Array<{id: number, nome: string, tempo: number, icon: string, play: boolean, tempoString: string}>;
+  items: Array<{id: number, nome: string, tempo: number, nome_arquivo: string, icon: string, play: boolean, tempoString: string}>;
 
 
   refreshData(){
@@ -26,6 +26,7 @@ export class Page2 {
             id: data.rows.item(i).id,
             nome: data.rows.item(i).nome,
             tempo: data.rows.item(i).tempo,
+            nome_arquivo: data.rows.item(i).nome_arquivo,
             tempoString: this.formataTempo(data.rows.item(i).tempo),
             icon: 'clipboard',
             play: false

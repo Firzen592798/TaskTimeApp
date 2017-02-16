@@ -22,7 +22,7 @@ export class Page1 {
 
   salvar() : void{
     console.log("tentando inserir");
-    this.database.executeSql("insert into tarefa (nome, tempo) values('"+this.txtTarefa+"', 0)", []).then((data) => {
+    this.database.executeSql("insert into tarefa (nome, tempo, nome_arquivo) values('"+this.txtTarefa+"', 0)", []).then((data) => {
       console.log("inserido com sucesso: " +this.txtTarefa);
       console.log(data);
       Base64ToGallery.base64ToGallery(this.imageData, 'img_').then(
@@ -52,7 +52,7 @@ export class Page1 {
       destinationType: Camera.DestinationType.DATA_URL,
       encodingType: Camera.EncodingType.JPEG,
       saveToPhotoAlbum: false,
-      allowEdit: true, 
+      allowEdit: false, 
       targetWidth: 192,
       targetHeight: 256,
       correctOrientation: true,

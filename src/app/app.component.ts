@@ -37,7 +37,7 @@ export class MyApp {
         name: "tasktime.db", 
         location: "default"
       }).then(() => {
-          db.executeSql("CREATE TABLE IF NOT EXISTS tarefa (id integer primary key autoincrement, nome TEXT, tempo INTEGER)", {}).then((data)=> {
+          db.executeSql("CREATE TABLE IF NOT EXISTS tarefa (id integer primary key autoincrement, nome TEXT, tempo INTEGER, nome_arquivo TEXT)", {}).then((data)=> {
             console.log("tabela criada", data);
           }, (error) => {
             console.error("erro na criação da tabela", error);
