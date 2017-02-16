@@ -11,6 +11,9 @@
   <ion-item>
     <ion-input placeholder="Nome" type="text" [(ngModel)]="txtTarefa"></ion-input>
   </ion-item>
+
+  <img [src]="cameraData" *ngIf="cameraData">
+  <button ion-button block color="dark" (click)="openCamera()">Foto</button>
   <button ion-button ion-button block (click)="salvar()">Salvar</button>
 </ion-content>
   

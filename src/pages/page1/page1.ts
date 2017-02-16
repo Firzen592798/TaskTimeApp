@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { NavController, AlertController } from 'ionic-angular';
 
-import { SQLite } from 'ionic-native'; 
+import { Camera,  SQLite } from 'ionic-native'; 
 
 @Component({
   selector: 'page-page1',
@@ -11,6 +11,7 @@ import { SQLite } from 'ionic-native';
 export class Page1 {
   database: SQLite;
   txtTarefa: string;
+  cameraData: string;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
     this.database = new SQLite();
@@ -40,4 +41,20 @@ export class Page1 {
     });
     alert.present();
   }
+
+  openCamera(){
+    let options = {
+      sourceType: Camera.PictureSourceType.CAMERA,
+      destinationType: Camera.DestinationType.DATA_URL,
+      encodingType: Camera.EncodingType.JPEG,
+      saveToPhotoAlbum: false,
+      allowEdit: true, 
+    };
+    Camera.getPicture(options).then((imageData) => {
+       this.cameraData = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+      console.log("error");
+    });
+  }
+ 
 }

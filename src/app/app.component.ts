@@ -29,7 +29,7 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {      
-        this.nav.setRoot(Page2);
+        this.nav.setRoot(Page1);
       StatusBar.styleDefault();
       Splashscreen.hide();
       let db = new SQLite();
