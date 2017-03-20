@@ -4,6 +4,8 @@ import { NavController, AlertController } from 'ionic-angular';
 
 import { Camera,  SQLite, Base64ToGallery } from 'ionic-native'; 
 
+import { Page2 } from '../page2/page2'
+
 @Component({
   selector: 'page-page1',
   templateUrl: 'page1.html'
@@ -21,18 +23,22 @@ export class Page1 {
   }
 
   salvar() : void{
-    console.log("tentando inserir");
-    this.database.executeSql("insert into tarefa (nome, tempo, nome_arquivo) values('"+this.txtTarefa+"', 0)", []).then((data) => {
-      console.log("inserido com sucesso: " +this.txtTarefa);
-      console.log(data);
-      Base64ToGallery.base64ToGallery(this.imageData, 'img_').then(
-        res => console.log('Saved image to gallery ', res),
+    var path: string;
+    Base64ToGallery.base64ToGallery(this.imageData, 'img_').then(
+        res => {
+          path = res; 
+          this.database.executeSql("insert into tarefa (nome, tempo, path) values('"+this.txtTarefa+"', 0, '"+path+"')", []).then((data) => {
+          console.log("inserido com sucesso: " +this.txtTarefa);
+          console.log("Inserido" + data);
+          this.showAlert();
+        }, (error) => {
+          console.log(error);
+        });
+        },
         err => console.log('Error saving image to gallery ', err)
-      );
-      this.showAlert();
-    }, (error) => {
-      console.log(error);
-    });
+    );
+
+    
     //this.refreshData();
     this.txtTarefa = "";
   }
@@ -41,7 +47,11 @@ export class Page1 {
     let alert = this.alertCtrl.create({
       title: 'Sucesso!',
       subTitle: 'Tarefa cadastrada com sucesso!',
-      buttons: ['OK']
+      buttons: [{text: 'OK',
+        handler: () => {
+         this.navCtrl.push(Page2);
+        }
+      }]
     });
     alert.present();
   }
@@ -52,7 +62,6 @@ export class Page1 {
       destinationType: Camera.DestinationType.DATA_URL,
       encodingType: Camera.EncodingType.JPEG,
       saveToPhotoAlbum: false,
-      allowEdit: false, 
       targetWidth: 192,
       targetHeight: 256,
       correctOrientation: true,

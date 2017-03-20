@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { SQLite, BackgroundMode } from 'ionic-native';
+import { SQLite, BackgroundMode, File } from 'ionic-native';
 
 import { NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 
@@ -13,29 +13,33 @@ export class Page2 {
   database: SQLite;
   selectedItem: any;
   icons: string[];
-  items: Array<{id: number, nome: string, tempo: number, nome_arquivo: string, icon: string, play: boolean, tempoString: string}>;
+  items: Array<{id: number, nome: string, tempo: number, icon: string, play: boolean, tempoString: string, path: string, imagem: string}>;
 
 
   refreshData(){
     this.items = [];
     this.database.executeSql("select * from tarefa", []).then((data) => {
-       console.log(data);
       if(data.rows.length > 0){
         for(var i = 0; i < data.rows.length; i++){
           this.items.push({
             id: data.rows.item(i).id,
             nome: data.rows.item(i).nome,
             tempo: data.rows.item(i).tempo,
-            nome_arquivo: data.rows.item(i).nome_arquivo,
             tempoString: this.formataTempo(data.rows.item(i).tempo),
             icon: 'clipboard',
-            play: false
+            play: false,
+            path: data.rows.item(i).path,
+            imagem: ''
           });
+          console.log("Setando imagem");
+          this.setImagem(this.items[i]);
+         console.log("imagem "+this.items[i]);
         }
       } 
     }, (error) => {
       console.log(error);
     });
+    console.log(this.items);
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public alertCtrl: AlertController) {
@@ -44,14 +48,10 @@ export class Page2 {
     this.database = new SQLite();
     this.database.openDatabase({name: "tasktime.db", location: "default"}).then(() => {
     this.items = [];
-    console.log("Items1 = "+this.items);
     this.refreshData();
     //console.log("Items Refresh = "+this.items);
-    console.log("Items antes timer = "+this.items);
     
     setInterval(() => this.timer(this.items), 1000);
-
-    console.log('Items timer '+this.items);
     }, (error) => {
       console.log("Erro ao listar");
     });  
@@ -64,14 +64,12 @@ export class Page2 {
   }
 
   timer(items: any){
-    console.log("Modo Background:"+BackgroundMode.isActive());
     for(var i = 0; i < items.length; i++){
       if(items[i].play){
         items[i].tempo += 1;
         items[i].tempoString = this.formataTempo(items[i].tempo);
       }
       //this.items[i].tempo += 1;
-      console.log(items[i]);
     }
   }
 
@@ -81,9 +79,7 @@ export class Page2 {
     elapsed  = (elapsed - ss) / 60;
     var min = elapsed % 60;
     elapsed = (elapsed - min) / 60;
-    console.log(elapsed)
     var hh = elapsed % 24;
-    console.log(hh)
     return this.pad(hh) + ":" + this.pad(min) + ":" + this.pad(ss);
   }
 
@@ -149,5 +145,20 @@ export class Page2 {
       ]
     });
     confirm.present();
+  }
+
+  setImagem(item){
+    console.log("ENTROU SET IMAGEM");
+    var path = item.path;
+    var splited = path.split('/');
+    splited[splited.length - 1];
+    File.readAsDataURL('file:///'+path.replace("/"+splited[splited.length - 1], ""), splited[splited.length - 1]).then(function (base64Img) {
+                  //console.log(base64Img);
+                  item.imagem = base64Img;
+                  console.log("ITEM DEPOIS DE SET IMAGEM: "+item);
+              })
+              .catch(function (err: TypeError) {
+                  console.log(err.message);
+    });
   }
 }

@@ -29,7 +29,7 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {      
-        this.nav.setRoot(Page1);
+        this.nav.setRoot(Page2);
       StatusBar.styleDefault();
       Splashscreen.hide();
       let db = new SQLite();
@@ -37,18 +37,20 @@ export class MyApp {
         name: "tasktime.db", 
         location: "default"
       }).then(() => {
-          db.executeSql("CREATE TABLE IF NOT EXISTS tarefa (id integer primary key autoincrement, nome TEXT, tempo INTEGER, nome_arquivo TEXT)", {}).then((data)=> {
+          db.executeSql("drop table tarefa", {}).then(()=> {
+          })
+          db.executeSql("CREATE TABLE IF NOT EXISTS tarefa (id integer primary key autoincrement, nome TEXT, tempo INTEGER, path TEXT)", {}).then((data)=> {
             console.log("tabela criada", data);
+            
           }, (error) => {
             console.error("erro na criação da tabela", error);
-          })
-          db.executeSql("delete from tarefa)", {}).then(()=> {
           })
       },(error) => {
          console.error("erro na criação da tabela", error);
       });     
     });
   }
+
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
