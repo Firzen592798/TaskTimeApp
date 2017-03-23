@@ -24,23 +24,50 @@ export class Page1 {
 
   salvar() : void{
     var path: string;
-    Base64ToGallery.base64ToGallery(this.imageData, 'img_').then(
-        res => {
-          path = res; 
-          this.database.executeSql("insert into tarefa (nome, tempo, path) values('"+this.txtTarefa+"', 0, '"+path+"')", []).then((data) => {
-          console.log("inserido com sucesso: " +this.txtTarefa);
-          console.log("Inserido" + data);
-          this.showAlert();
-        }, (error) => {
-          console.log(error);
-        });
-        },
-        err => console.log('Error saving image to gallery ', err)
-    );
-
-    
+    if(this.txtTarefa != null && this.txtTarefa != ''){
+    if(this.imageData != null && this.imageData != ''){
+      Base64ToGallery.base64ToGallery(this.imageData, 'img_').then(
+          res => {
+            path = res; 
+            this.database.executeSql("insert into tarefa (nome, tempo, path) values('"+this.txtTarefa+"', 0, '"+path+"')", []).then((data) => {
+            console.log("inserido com sucesso: " +this.txtTarefa);
+            console.log("Inserido" + data);
+            this.txtTarefa = "";
+            this.showAlert();
+          }, (error) => {
+            console.log(error);
+            this.txtTarefa = "";
+            this.imageData = "";
+          });
+          },
+          err => console.log('Error saving image to gallery ', err)
+      );   
+    }else{
+            this.database.executeSql("insert into tarefa (nome, tempo, path) values('"+this.txtTarefa+"', 0, '"+path+"')", []).then((data) => {
+            console.log("inserido com sucesso: " +this.txtTarefa);
+            console.log("Inserido" + data);
+            this.txtTarefa = "";
+            this.showAlert();
+            }, (error) => {
+            console.log(error);
+            this.txtTarefa = "";
+            this.imageData = "";
+          });
+    }
+    }else{
+      let alert = this.alertCtrl.create({
+      title: 'Aviso!',
+      subTitle: 'Nome da tarefa é obrigatório!',
+      buttons: [{text: 'OK',
+        handler: () => {
+         
+        }
+      }]
+    });
+    alert.present();
+    }
     //this.refreshData();
-    this.txtTarefa = "";
+    
   }
 
   showAlert() {
