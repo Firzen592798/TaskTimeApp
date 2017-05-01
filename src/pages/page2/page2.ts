@@ -148,12 +148,12 @@ export class Page2 {
   }
 
   setImagem(item){
-    console.log("ENTROU SET IMAGEM");
+    console.log("ENTROU SET IMAGEM: Path = "+item.path);
     var path = item.path;
     var splited = path.split('/');
     splited[splited.length - 1];
     File.readAsDataURL('file:///'+path.replace("/"+splited[splited.length - 1], ""), splited[splited.length - 1]).then(function (base64Img) {
-                  //console.log(base64Img);
+                  console.log(base64Img);
                   item.imagem = base64Img;
                   console.log("ITEM DEPOIS DE SET IMAGEM: "+item);
               })

@@ -37,8 +37,6 @@ export class MyApp {
         name: "tasktime.db", 
         location: "default"
       }).then(() => {
-          db.executeSql("drop table tarefa", {}).then(()=> {
-          })
           db.executeSql("CREATE TABLE IF NOT EXISTS tarefa (id integer primary key autoincrement, nome TEXT, tempo INTEGER, path TEXT)", {}).then((data)=> {
             console.log("tabela criada", data);
             

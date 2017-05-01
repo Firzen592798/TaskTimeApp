@@ -23,24 +23,36 @@ export class Page1 {
   }
 
   salvar() : void{
-    var path: string;
-    Base64ToGallery.base64ToGallery(this.imageData, 'img_').then(
-        res => {
-          path = res; 
-          this.database.executeSql("insert into tarefa (nome, tempo, path) values('"+this.txtTarefa+"', 0, '"+path+"')", []).then((data) => {
-          console.log("inserido com sucesso: " +this.txtTarefa);
-          console.log("Inserido" + data);
-          this.showAlert();
-        }, (error) => {
-          console.log(error);
-        });
-        },
-        err => console.log('Error saving image to gallery ', err)
-    );
-
-    
-    //this.refreshData();
-    this.txtTarefa = "";
+    if(this.txtTarefa){
+      var path: string;
+      Base64ToGallery.base64ToGallery(this.imageData, 'img_').then(
+          res => {
+            path = res; 
+            this.database.executeSql("insert into tarefa (nome, tempo, path) values('"+this.txtTarefa+"', 0, '"+path+"')", []).then((data) => {
+            console.log("inserido com sucesso: " +this.txtTarefa);
+            console.log("Inserido" + data);
+            this.txtTarefa = "";
+            this.imageData = "";
+            this.cameraData = "";
+            this.showAlert();
+          }, (error) => {
+            console.log(error);
+          });
+          },
+          err => console.log('Erro ao salvar na galeria ', err)
+      );
+    }else{
+        let alert = this.alertCtrl.create({
+        title: 'Erro!',
+        subTitle: 'É necessário preencher o nome da tarefa!',
+        buttons: [{text: 'OK',
+          handler: () => {
+            
+          }
+        }]
+      });
+      alert.present();
+    }
   }
 
   showAlert() {
