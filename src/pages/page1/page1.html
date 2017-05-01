@@ -3,13 +3,13 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Cadastrar Tarefa</ion-title>
+    <ion-title>Nova Tarefa</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <ion-item>
-    <ion-input placeholder="Nome" type="text" [(ngModel)]="txtTarefa"></ion-input>
+    <ion-input aria-required="true" placeholder="Nome" type="text" [(ngModel)]="txtTarefa"></ion-input>
   </ion-item>
 
   <img [src]="cameraData" *ngIf="cameraData">
